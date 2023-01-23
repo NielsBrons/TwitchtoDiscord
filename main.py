@@ -170,6 +170,21 @@ if __name__ == '__main__':
         else:
             await channel.send('bot is not ready')
 
+    # function to remove streamer from database
+    @client.command()
+    async def removestreamer(ctx, arg):
+            
+            channel = client.get_channel(int(CHANNEL))
+    
+            res = cur.execute("SELECT * FROM streamers WHERE name = ?", (arg,))
+            name = res.fetchone()
+            if name is None:
+                await channel.send("Streamer is not known")
+                return
+    
+            cur.execute("DELETE FROM streamers WHERE name = ?", (arg,))
+            con.commit()
+            await channel.send(f"Streamer {arg} removed")
 
     @client.event
     async def on_ready():
