@@ -133,12 +133,12 @@ if __name__ == '__main__':
             print(er)
 
         if result.status_code != 200:
-
             await get_twitch_oauth()
-        else:
-            if int(result.json()['expires_in']) < 3600:
-                await get_twitch_oauth()
-            return True
+
+        if int(result.json()['expires_in']) < 3600:
+            await get_twitch_oauth()
+
+        return True
 
     intents=discord.Intents.default()
     intents.message_content = True
