@@ -36,6 +36,8 @@ if __name__ == '__main__':
         
         client.TWITCH_OAUTH = result.json()['access_token']
 
+        # for debug in case issue #1 is not resolved
+        print(client.TWITCH_OAUTH)
 
     @tasks.loop(minutes=1)
     async def streamer_status():
@@ -134,10 +136,10 @@ if __name__ == '__main__':
 
         if result.status_code != 200:
             await get_twitch_oauth()
+            return True
 
-        if int(result.json()['expires_in']) < 3600:
+        if int(result.json()['expires_in']) < 86400:
             await get_twitch_oauth()
-
         return True
 
     intents=discord.Intents.default()
